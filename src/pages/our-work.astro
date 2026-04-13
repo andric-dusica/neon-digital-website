@@ -1,0 +1,273 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { supabase } from '../lib/supabase';
+
+const { data: homeData } = await supabase
+  .from('home_our_work_images_videos')
+  .select('media_url, type, category, cover_url, project_name, project_name_sr, order_reels')
+  .order('order', { ascending: true });
+
+const { data: ourWorkData } = await supabase
+  .from('our_work_images_videos')
+  .select('media_url, type, category, cover_url, project_name, project_name_sr, direction, order, order_vc, order_reels')
+  .order('order', { ascending: true });
+
+const ourWorkUrls = new Set((ourWorkData || []).map(item => item.media_url));
+const filteredHomeData = (homeData || []).filter(item => !ourWorkUrls.has(item.media_url));
+const allMedia = [...filteredHomeData, ...(ourWorkData || [])];
+allMedia.sort((a, b) => (a.order || 0) - (b.order || 0));
+---
+
+<BaseLayout title="Neon Digital - Our Work" description="Discover our portfolio." ogUrl="https://neondigital.rs/our-work">
+
+  <div class="w-full flex justify-center relative contact_us_gradient overflow-hidden">
+    <div class="py-[56px] px-4 lg:px-[84px] lg:py-[96px] flex flex-col gap-6 lg:gap-[64px] w-full max-w-[1440px] mx-auto">
+      <h2 class="text-[#fff] text-center lg:text-left text-2xl lg:text-5xl font-bold leading-[28px] lg:leading-[64px]" data-i18n="ourWorkPage.title">Our Work</h2>
+
+      <div class="flex flex-col items-start gap-[24px] w-full">
+        <!-- Mobile dropdown -->
+        <div class="w-full lg:hidden relative">
+          <button id="filter-toggle" class="dropdown-toggle w-full flex justify-between items-center text-white text-lg py-3 px-4 bg-[#16163D] rounded-lg">
+            <span id="filter-label" data-i18n="ourWorkPage.allProjects">All Projects</span>
+            <svg id="dropdown-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <div id="filter-dropdown" class="hidden absolute left-0 right-0 bg-[#16163D] rounded-lg shadow-lg mt-2 z-50 py-[10px] w-full">
+            <ul class="flex flex-col">
+              <li><button class="filter-btn w-full text-left px-4 py-2 text-white" data-category="all" data-i18n="ourWorkPage.allProjects">All Projects</button></li>
+              <li><button class="filter-btn w-full text-left px-4 py-2 text-white" data-category="video" data-i18n="ourWorkPage.video">Video</button></li>
+              <li><button class="filter-btn w-full text-left px-4 py-2 text-white" data-category="reels" data-i18n="ourWorkPage.reels">Reels</button></li>
+              <li><button class="filter-btn w-full text-left px-4 py-2 text-white" data-category="photography" data-i18n="ourWorkPage.photography">Photography</button></li>
+              <li><button class="filter-btn w-full text-left px-4 py-2 text-white" data-category="vc_stories" data-i18n="ourWorkPage.vcStories">Visually Creative Stories</button></li>
+              <li><button class="filter-btn w-full text-left px-4 py-2 text-white" data-category="360" data-i18n="ourWorkPage.threeSixty">360&deg; Space Tour</button></li>
+            </ul>
+          </div>
+        </div>
+
+        <div id="desktop-filters" class="hidden lg:flex gap-4">
+          <button class="filter-btn active text-white px-4 py-2 rounded-lg bg-[#A510C3]" data-category="all" data-i18n="ourWorkPage.allProjects">All Projects</button>
+          <button class="filter-btn text-white px-4 py-2 rounded-lg" data-category="video" data-i18n="ourWorkPage.video">Video</button>
+          <button class="filter-btn text-white px-4 py-2 rounded-lg" data-category="reels" data-i18n="ourWorkPage.reels">Reels</button>
+          <button class="filter-btn text-white px-4 py-2 rounded-lg" data-category="photography" data-i18n="ourWorkPage.photography">Photography</button>
+          <button class="filter-btn text-white px-4 py-2 rounded-lg" data-category="vc_stories" data-i18n="ourWorkPage.vcStories">Visually Creative Stories</button>
+          <button class="filter-btn text-white px-4 py-2 rounded-lg" data-category="360" data-i18n="ourWorkPage.threeSixty">360&deg; Space Tour</button>
+        </div>
+      </div>
+
+      <div class="gallery grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-[24px] lg:gap-[36px] mx-auto lg:mx-0" id="gallery-container"></div>
+    </div>
+  </div>
+
+</BaseLayout>
+
+<script type="application/json" id="gallery-data" set:html={JSON.stringify(allMedia)}></script>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    var allMedia = [];
+    try { allMedia = JSON.parse(document.getElementById('gallery-data').textContent); } catch(e) {}
+
+    var gallery = document.getElementById('gallery-container');
+    var filterToggle = document.getElementById('filter-toggle');
+    var filterDropdown = document.getElementById('filter-dropdown');
+    var filterLabel = document.getElementById('filter-label');
+    var dropdownIcon = document.getElementById('dropdown-icon');
+
+    var custom360 = [
+      { img: '/images/atlas360.png', link: 'https://atlas360.neondigital.rs', name: 'Atlas 360° Tour', name_sr: 'Atlas 360° virtuelna tura' },
+      { img: '/images/ustanicka360.png', link: 'https://ustanicka360.neondigital.rs', name: 'Ustanička 360° Tour', name_sr: 'Ustanička 360° virtuelna tura' },
+    ];
+
+    var currentFiltered = [];
+
+    if (filterToggle && filterDropdown) {
+      filterToggle.addEventListener('click', function() {
+        filterDropdown.classList.toggle('hidden');
+        if (dropdownIcon) dropdownIcon.style.transform = filterDropdown.classList.contains('hidden') ? '' : 'rotate(180deg)';
+      });
+    }
+
+    document.querySelectorAll('.filter-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var cat = this.getAttribute('data-category');
+        document.querySelectorAll('#desktop-filters .filter-btn').forEach(function(b) { b.classList.remove('active', 'bg-[#A510C3]'); });
+        var db = document.querySelector('#desktop-filters .filter-btn[data-category="' + cat + '"]');
+        if (db) db.classList.add('active', 'bg-[#A510C3]');
+        if (filterLabel) filterLabel.textContent = this.textContent;
+        if (filterDropdown) filterDropdown.classList.add('hidden');
+        if (dropdownIcon) dropdownIcon.style.transform = '';
+        renderGallery(cat);
+      });
+    });
+
+    function getFiltered(cat) {
+      if (cat === 'all') return allMedia.slice().sort(function(a, b) { return (a.order || 0) - (b.order || 0); });
+      if (cat === '360') return [];
+      if (cat === 'reels') return allMedia.filter(function(i) { return i.category === 'reels'; }).sort(function(a, b) { return (a.order_reels || 0) - (b.order_reels || 0); });
+      if (cat === 'vc_stories') return allMedia.filter(function(i) { return i.category === 'vc_stories'; }).sort(function(a, b) { return (a.order_vc || 0) - (b.order_vc || 0); });
+      var typeMap = { video: 'video', photography: 'image' };
+      var ft = typeMap[cat] || cat;
+      return allMedia.filter(function(i) { return i.type === ft || i.category === cat; }).sort(function(a, b) { return (a.order || 0) - (b.order || 0); });
+    }
+
+    function renderGallery(cat) {
+      gallery.innerHTML = '';
+      currentFiltered = getFiltered(cat);
+      var isMobile = window.innerWidth <= 768;
+      var lang = localStorage.getItem('lang') || 'en';
+
+      if (typeof Fancybox !== 'undefined') Fancybox.destroy();
+
+      currentFiltered.forEach(function(item, idx) { gallery.appendChild(createItem(item, idx, isMobile, lang)); });
+
+      if (cat === 'all' || cat === '360') {
+        custom360.forEach(function(p) {
+          var a = document.createElement('a');
+          a.href = p.link; a.target = '_blank';
+          a.style.cssText = 'display:block;position:relative;overflow:hidden;border-radius:12px;';
+          var img = document.createElement('img');
+          img.src = p.img; img.alt = lang === 'sr' ? p.name_sr : p.name;
+          img.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+          var label = document.createElement('div');
+          label.style.cssText = 'position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(transparent,rgba(0,0,0,0.7));color:white;font-size:14px;';
+          label.textContent = lang === 'sr' ? p.name_sr : p.name;
+          a.appendChild(img); a.appendChild(label);
+          gallery.appendChild(a);
+        });
+      }
+
+      if (!isMobile && typeof Fancybox !== 'undefined') {
+        Fancybox.bind('[data-fancybox="our-work-gallery"]', {
+          Hash: false, loop: false,
+          Thumbs: { type: 'classic' },
+          Carousel: {
+            transition: 'fadeFast',
+            friction: 0.5,
+          },
+          on: {
+            'Carousel.selectSlide': function() {
+              document.querySelectorAll('.fancybox-video').forEach(function(v) {
+                v.pause(); v.currentTime = 0; v.removeAttribute('src'); v.removeAttribute('autoplay'); v.load();
+              });
+              var active = document.querySelector('.fancybox__slide.is-selected .fancybox-video');
+              if (!active) return;
+              var src = active.getAttribute('data-src');
+              if (src) {
+                active.setAttribute('src', src); active.setAttribute('autoplay', 'true'); active.load();
+                active.muted = true;
+                active.play().then(function() {
+                  active.removeAttribute('poster');
+                  setTimeout(function() { active.muted = false; active.volume = 1.0; }, 300);
+                }).catch(function() {});
+              }
+            },
+            'close': function() {
+              document.querySelectorAll('.fancybox-video').forEach(function(v) {
+                v.pause(); v.currentTime = 0; v.removeAttribute('src'); v.load();
+              });
+            },
+          },
+        });
+      }
+    }
+
+    function createItem(item, idx, isMobile, lang) {
+      var wrapper = document.createElement('div');
+      wrapper.style.cssText = 'position:relative;overflow:hidden;border-radius:12px;cursor:pointer;';
+      var a = document.createElement('a');
+      a.href = item.media_url;
+
+      if (isMobile) {
+        a.addEventListener('click', function(e) { e.preventDefault(); openMobile(currentFiltered, idx); });
+      } else {
+        a.setAttribute('data-fancybox', 'our-work-gallery');
+        if (item.type === 'video') {
+          a.setAttribute('data-type', 'html');
+          a.setAttribute('data-html', '<div style="position:relative;display:inline-block;width:100%;max-width:700px;max-height:620px;"><video class="fancybox-video" controls playsinline preload="metadata" style="border-radius:28px;width:100%;height:auto;" poster="' + (item.cover_url || '') + '" data-src="' + item.media_url + '">Browser unsupported.</video></div>');
+        }
+      }
+
+      if (item.type === 'image') {
+        var img = document.createElement('img');
+        img.src = item.media_url; img.alt = (lang === 'sr' ? item.project_name_sr : item.project_name) || 'Portfolio';
+        img.loading = 'lazy'; img.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+        a.appendChild(img);
+      } else {
+        var cover = document.createElement('img');
+        cover.src = item.cover_url || item.media_url;
+        cover.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+        var play = document.createElement('div');
+        play.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50px;height:50px;background:rgba(0,0,0,0.6);border-radius:50%;display:flex;align-items:center;justify-content:center;';
+        play.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"></path></svg>';
+        a.appendChild(cover); a.appendChild(play);
+      }
+
+      var pn = lang === 'sr' ? item.project_name_sr : item.project_name;
+      if (pn) {
+        var label = document.createElement('div');
+        label.style.cssText = 'position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(transparent,rgba(0,0,0,0.7));color:white;font-size:14px;' + (isMobile ? '' : 'opacity:0;transition:opacity 0.3s;');
+        label.textContent = pn;
+        wrapper.appendChild(label);
+        if (!isMobile) {
+          wrapper.addEventListener('mouseenter', function() { label.style.opacity = '1'; });
+          wrapper.addEventListener('mouseleave', function() { label.style.opacity = '0'; });
+        }
+      }
+      wrapper.appendChild(a);
+      return wrapper;
+    }
+
+    function openMobile(media, startIdx) {
+      var cur = startIdx;
+      var prevY = window.scrollY;
+      document.body.style.position = 'fixed'; document.body.style.top = '-' + prevY + 'px';
+      document.body.style.left = '0'; document.body.style.right = '0'; document.body.style.width = '100%';
+      var m = document.createElement('div');
+      m.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:9999;display:flex;align-items:center;justify-content:center;';
+      var c = document.createElement('div');
+      c.style.cssText = 'display:flex;align-items:center;justify-content:center;width:100%;height:100%;';
+      var cb = document.createElement('button');
+      cb.innerHTML = '&times;';
+      cb.style.cssText = 'position:absolute;top:-5px;right:20px;background:none;border:none;color:white;font-size:30px;cursor:pointer;';
+
+      function close() {
+        document.body.style.position = ''; document.body.style.top = '';
+        document.body.style.left = ''; document.body.style.right = ''; document.body.style.width = '';
+        window.scrollTo(0, prevY); m.remove();
+      }
+      function update() {
+        c.querySelectorAll('video').forEach(function(v) { v.pause(); v.removeAttribute('src'); v.load(); });
+        c.innerHTML = '';
+        var item = media[cur]; if (!item) return;
+        if (item.type === 'image') {
+          var img = document.createElement('img'); img.src = item.media_url;
+          img.style.cssText = 'max-width:90%;max-height:90%;border-radius:28px;';
+          c.appendChild(img);
+        } else {
+          var v = document.createElement('video');
+          v.controls = true; v.playsInline = true; v.src = item.media_url; v.autoplay = true;
+          v.style.cssText = 'max-width:90%;max-height:90%;border-radius:28px;';
+          c.appendChild(v); v.play().catch(function() {});
+        }
+      }
+      var sx = 0, sy = 0;
+      c.addEventListener('touchstart', function(e) { if (e.touches.length > 0) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; } });
+      c.addEventListener('touchmove', function(e) {
+        if (e.touches.length > 0) {
+          var dx = e.touches[0].clientX - sx; var dy = e.touches[0].clientY - sy;
+          if (dx < -50) { cur = (cur + 1) % media.length; update(); sx = e.touches[0].clientX; }
+          else if (dx > 50) { cur = (cur - 1 + media.length) % media.length; update(); sx = e.touches[0].clientX; }
+          else if (dy > 50 && Math.abs(dy) > Math.abs(dx)) close();
+        }
+      });
+      cb.addEventListener('click', close);
+      m.addEventListener('click', function(e) { if (e.target === m) close(); });
+      update();
+      m.appendChild(c); m.appendChild(cb);
+      document.body.appendChild(m);
+    }
+
+    renderGallery('all');
+  });
+</script>
