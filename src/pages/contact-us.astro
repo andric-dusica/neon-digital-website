@@ -1,0 +1,174 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Neon Digital - Contact Us" description="Get in touch with us for inquiries and collaborations." ogUrl="https://neondigital.rs/contact-us">
+
+  <div class="w-full flex justify-center relative contact_us_gradient overflow-hidden">
+    <div class="py-[56px] px-4 lg:px-[84px] lg:py-[96px] flex flex-col gap-6 lg:gap-[64px] w-full max-w-[1440px] mx-auto">
+      <h2 class="text-[#fff] text-center lg:text-left text-2xl lg:text-5xl font-bold leading-[28px] lg:leading-[64px]" data-i18n="contactUsPage.title">
+        Contact Us
+      </h2>
+      <div class="flex flex-col lg:flex-row justify-between items-start gap-6 lg:gap-[64px] w-full">
+        <!-- Contact Info -->
+        <div class="flex flex-col items-start gap-6 w-full lg:w-1/2 shrink-0">
+          <p class="text-[#fff] text-xl lg:text-2xl font-medium leading-6 lg:leading-[32px]" data-i18n="contactUsPage.subtitle">Our Contact Information</p>
+          <p class="text-[#C7C7C9] text-base lg:text-xl leading-[24px] lg:leading-[32px]" data-i18n="contactUsPage.desc">
+            Write us an email with any of your questions regarding our services, previous work or anything that could spark a new collaboration project.
+          </p>
+          <div class="flex flex-col items-start gap-2">
+            <p class="text-[#FF3EE4] text-xs lg:text-lg leading-4" data-i18n="contactUsPage.emailLabel">Email</p>
+            <p class="text-[#C7C7C9] text-base lg:text-xl leading-[24px] lg:leading-[32px]" data-i18n="contactUsPage.email">neondigital.creative@gmail.com</p>
+          </div>
+          <div class="flex flex-col items-start gap-2">
+            <p class="text-[#FF3EE4] text-xs lg:text-lg leading-4" data-i18n="contactUsPage.instagramLabel">Instagram</p>
+            <p class="text-[#C7C7C9] text-base lg:text-xl leading-[24px] lg:leading-[32px] cursor-pointer">
+              <a href="https://www.instagram.com/neon_digital_?igsh=MWwxdm40ZWl4NGE2dA%3D%3D" target="_blank" data-i18n="contactUsPage.instagramLink">@neon_digital</a>
+            </p>
+          </div>
+          <div class="flex flex-col items-start gap-2">
+            <p class="text-[#FF3EE4] text-xs lg:text-lg leading-4" data-i18n="contactUsPage.linkedinLabel">LinkedIn</p>
+            <p class="text-[#C7C7C9] text-base lg:text-xl leading-[24px] lg:leading-[32px] cursor-pointer">
+              <a href="https://www.linkedin.com/in/neondigital/" target="_blank" data-i18n="contactUsPage.linkedinLink">www.linkedin.com/in/neondigital/</a>
+            </p>
+          </div>
+          <div class="flex flex-col items-start gap-2">
+            <p class="text-[#FF3EE4] text-xs lg:text-lg leading-4" data-i18n="contactUsPage.phoneLabel">Phone Number</p>
+            <p class="text-[#C7C7C9] text-base lg:text-xl leading-[24px] lg:leading-[32px]">
+              <a href="tel:+381648830211" class="hover:underline" data-i18n="contactUsPage.phone1">+381 64 88 30 211</a><br />
+              <a href="tel:+381643159558" class="hover:underline" data-i18n="contactUsPage.phone2">+381 64 3159 558</a>
+            </p>
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <form action="" class="w-full lg:w-1/2 shrink-0" id="contact-form">
+          <div class="flex flex-col gap-6 lg:gap-10">
+            <div class="flex flex-col relative gap-3">
+              <label for="email" class="text-[#fff] text-xl lg:text-2xl font-medium m-0" data-i18n="contactUsPage.emailLabel">Email</label>
+              <input type="email" id="email" name="email" placeholder="Enter your email" data-i18n="contactUsPage.emailPlaceholder"
+                class="bg-[#1B1B3D] text-[#C7C7C9] p-3 rounded-lg border border-gray-600 w-full focus:outline-none" />
+            </div>
+            <div class="flex flex-col relative gap-3">
+              <label for="subject" class="text-[#fff] text-xl lg:text-2xl font-medium m-0" data-i18n="contactUsPage.subjectLabel">Subject</label>
+              <input type="text" id="subject" name="subject" placeholder="Enter the subject of your message" data-i18n="contactUsPage.subjectPlaceholder"
+                maxlength="20"
+                class="bg-[#1B1B3D] text-[#C7C7C9] p-3 rounded-lg border border-gray-600 w-full focus:outline-none" />
+              <span id="subject-count" class="text-[#C7C7C9] text-sm ml-auto">0/20</span>
+            </div>
+            <div class="flex flex-col relative gap-3">
+              <label for="message" class="text-[#fff] text-xl lg:text-2xl font-medium m-0" data-i18n="contactUsPage.messageLabel">Message</label>
+              <textarea id="message" name="message" placeholder="Enter your message" data-i18n="contactUsPage.messagePlaceholder"
+                maxlength="300"
+                class="bg-[#1B1B3D] text-[#C7C7C9] p-3 rounded-lg border border-gray-600 w-full h-[216px] max-h-[216px] resize-none focus:outline-none"></textarea>
+              <span id="message-count" class="text-[#C7C7C9] text-sm ml-auto">0/300</span>
+            </div>
+            <button type="submit" class="btn-color w-full lg:w-max lg:ml-auto" data-i18n="contactUsPage.sendMessageBtn">Send Message</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="blue_gradient"></div>
+  </div>
+
+</BaseLayout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    var form = document.getElementById('contact-form');
+    var emailInput = document.getElementById('email');
+    var subjectInput = document.getElementById('subject');
+    var messageInput = document.getElementById('message');
+    var subjectCount = document.getElementById('subject-count');
+    var messageCount = document.getElementById('message-count');
+
+    if (subjectInput && subjectCount) {
+      subjectInput.addEventListener('input', function() { subjectCount.textContent = this.value.length + '/20'; });
+    }
+    if (messageInput && messageCount) {
+      messageInput.addEventListener('input', function() { messageCount.textContent = this.value.length + '/300'; });
+    }
+
+    function showError(input, message, customClass) {
+      customClass = customClass || 'error-message';
+      clearError(input, customClass);
+      var span = document.createElement('span');
+      span.className = customClass + ' text-red-500 text-sm';
+      span.textContent = message;
+      input.parentElement.appendChild(span);
+    }
+
+    function clearError(input, customClass) {
+      customClass = customClass || 'error-message';
+      var span = input.parentElement.querySelector('.' + customClass);
+      if (span) span.remove();
+    }
+
+    function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
+
+    emailInput.addEventListener('input', function() { clearError(emailInput, 'error-message-email'); });
+    subjectInput.addEventListener('input', function() { clearError(subjectInput); });
+    messageInput.addEventListener('input', function() { clearError(messageInput); });
+
+    if (form) {
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        var email = emailInput.value.trim();
+        var subject = subjectInput.value.trim();
+        var message = messageInput.value.trim();
+
+        clearError(emailInput, 'error-message-email');
+        clearError(subjectInput);
+        clearError(messageInput);
+
+        var hasError = false;
+        if (!email || !isValidEmail(email)) { showError(emailInput, 'Please enter a valid email address.', 'error-message-email'); hasError = true; }
+        if (!subject) { showError(subjectInput, 'Subject cannot be empty.'); hasError = true; }
+        if (!message) { showError(messageInput, 'Message cannot be empty.'); hasError = true; }
+        if (hasError) return;
+
+        fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email, subject: subject, message: message }),
+        })
+        .then(function(res) { return res.json().then(function(data) { return { ok: res.ok, data: data }; }); })
+        .then(function(result) {
+          if (result.ok) {
+            showPopup('Message sent successfully!', 'success');
+            form.reset();
+            subjectCount.textContent = '0/20';
+            messageCount.textContent = '0/300';
+          } else {
+            showPopup('Something went wrong, please try again.', 'error');
+          }
+        })
+        .catch(function() { showPopup('Failed to send email.', 'error'); });
+      });
+    }
+  });
+
+  function showPopup(message, type) {
+    if (window.innerWidth < 768) {
+      var span = document.createElement('span');
+      span.textContent = message;
+      span.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);padding:10px 20px;border-radius:8px;font-size:16px;font-weight:bold;color:#fff;background:radial-gradient(circle,#00FF7F,#00D26A,#00A85A);box-shadow:0 0 15px #00FF7F;z-index:1000;opacity:1;width:max-content;';
+      document.body.appendChild(span);
+      setTimeout(function() { span.style.opacity = '0'; setTimeout(function() { span.remove(); }, 500); }, 3000);
+    } else {
+      var popup = document.createElement('div');
+      popup.style.cssText = 'position:fixed;top:50%;right:-100%;transform:translateY(-50%);z-index:1000;white-space:nowrap;padding:12px 24px;border-radius:8px;font-size:18px;font-weight:600;color:#fff;';
+      if (type === 'success') {
+        popup.style.background = 'radial-gradient(circle,#00FF7F,#00D26A,#00A85A)';
+        popup.style.boxShadow = '0 0 15px #00FF7F';
+      } else {
+        popup.style.background = 'radial-gradient(169.51% 152.63% at -15.27% 0%,#CA07AF 0%,#9215CE 46.9%,#3434D7 100%)';
+        popup.style.boxShadow = '0 0 15px rgba(255,62,228,0.89)';
+      }
+      popup.textContent = message;
+      document.body.appendChild(popup);
+      setTimeout(function() { popup.style.right = '50%'; popup.style.transform = 'translate(50%,-50%)'; popup.style.transition = 'right 0.5s ease-in-out,transform 0.5s ease-in-out'; }, 50);
+      setTimeout(function() { popup.style.opacity = '0'; popup.style.transform = 'translate(50%,-50%) scale(0.9)'; setTimeout(function() { popup.remove(); }, 300); }, 3000);
+    }
+  }
+</script>
