@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactCTA from '../components/ContactCTA.astro';
+---
+
+<BaseLayout title="Neon Digital - About Us" description="Learn more about our team, mission, and values." ogUrl="https://neondigital.rs/about-us">
+
+  <div class="w-full flex justify-center relative services_3">
+    <div class="flex w-full py-[56px] px-4 lg:py-[96px] lg:px-[84px] flex-col justify-center items-start gap-6 lg:gap-[64px] text-[#fff] max-w-[1440px] overflow-y-hidden">
+      <h3 class="text-[#fff] text-xl lg:text-4xl font-semibold leading-[24px]" data-i18n="aboutUsPage.title">About Us</h3>
+      <img src="/images/about_us/about_us_img.png" alt="us img" class="rounded-lg lg:hidden w-full h-auto object-cover" />
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10 w-full">
+        <div class="flex flex-col items-start gap-1 lg:w-1/2 shrink-0 lg:text-base">
+          <p class="text-[#C7C7C9] leading-[24px] lg:leading-[32px] tracking-[0.032px] lg:text-xl text-base" data-i18n="aboutUsPage.niksaDesc">
+            Together, they've crafted over a thousand digital stories, and they still argue about the best camera angles!
+          </p>
+          <img src="/images/about_us/blue_line.svg" alt="blue line" class="relative left-[-10px]" />
+          <p class="text-[#C7C7C9] leading-[24px] lg:leading-[32px] tracking-[0.032px]" data-i18n="aboutUsPage.niksaDetails">
+            Niksa Malic-Katanic, the Director of Photography who not only captures moments but also creates them.
+          </p>
+          <img src="/images/about_us/pink_line.svg" alt="pink line" class="relative left-[-10px]" />
+          <p class="text-[#C7C7C9] leading-[24px] lg:leading-[32px] tracking-[0.032px]" data-i18n="aboutUsPage.andjaDetails">
+            Say hello to the creative force of our digital team, Andjela Andric, who brings a vibrant and feminine touch to every project.
+          </p>
+        </div>
+        <div class="hidden lg:flex lg:justify-end lg:w-1/2">
+          <img src="/images/about_us/about_us_img.png" alt="us img" class="rounded-lg h-auto object-cover w-[624px] max-w-full" />
+        </div>
+      </div>
+      <div class="blue_gradient hidden lg:flex" style="bottom:-275px;"></div>
+    </div>
+  </div>
+
+  <ContactCTA />
+
+</BaseLayout>
