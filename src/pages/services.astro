@@ -1,0 +1,137 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Neon Digital - Services" description="Explore the services we offer to elevate your digital presence." ogUrl="https://neondigital.rs/services">
+
+  <div class="w-full flex justify-center relative services_3 overflow-hidden">
+    <div class="flex w-full py-[56px] px-4 lg:py-[96px] lg:px-[84px] flex-col justify-center items-start gap-10 lg:gap-[64px] text-[#fff] max-w-[1440px] overflow-y-hidden">
+      <div class="flex flex-col items-start gap-4 lg:gap-6">
+        <h2 class="text-[#fff] text-2xl lg:text-5xl font-semibold leading-[28px]" data-i18n="servicesPage.title">Services</h2>
+        <p class="text-[#C7C7C9] text-base lg:text-xl leading-[24px] lg:leading-[32px] tracking-[0.032px] lg:max-w-[624px]" data-i18n="servicesPage.servicesDesc">
+          The cost of the service depends on the creative solution, video duration, editing, number of photos, number of interviewees, equipment, and project complexity.
+        </p>
+      </div>
+
+      <!-- Video Section -->
+      <div class="grid lg:grid-cols-2 gap-6 w-full items-center">
+        <div class="flex flex-col justify-center items-start gap-6">
+          <h3 class="text-[#fff] text-xl lg:text-4xl font-semibold leading-[24px]" data-i18n="servicesPage.videoTitle">Video</h3>
+          <img src="/images/services/zlatibor.svg" alt="zlatibor img" class="rounded-lg lg:hidden" />
+          <p class="text-[#C7C7C9] text-base lg:text-xl leading-[24px] lg:leading-[32px] tracking-[0.032px]" data-i18n="servicesPage.videoDesc">
+            Our video services include both standard and reel formats, delivering captivating visuals that highlight your brand across all platforms.
+          </p>
+          <div class="w-full text-[#fff] text-base lg:text-xl">
+            <div class="grid grid-cols-[auto_1fr_auto] items-center gap-4 py-4">
+              <span class="font-bold" data-i18n="servicesPage.reel">Reel</span>
+              <span class="border-t border-gray-500 w-full"></span>
+              <span class="font-normal" data-i18n="servicesPage.reelPrice">from &euro;150</span>
+            </div>
+            <div class="grid grid-cols-[auto_1fr_auto] items-center gap-4 py-4">
+              <span class="font-bold" data-i18n="servicesPage.horizontalVideo">Horizontal Video</span>
+              <span class="border-t border-gray-500 w-full"></span>
+              <span class="font-normal" data-i18n="servicesPage.horizontalVideoPrice">from &euro;200</span>
+            </div>
+            <div class="grid grid-cols-[auto_1fr_auto] items-center gap-4 py-4">
+              <span class="font-bold" data-i18n="servicesPage.eventVideo">Event Video</span>
+              <span class="border-t border-gray-500 w-full"></span>
+              <span class="font-normal" data-i18n="servicesPage.eventVideoPrice">from &euro;300</span>
+            </div>
+            <div class="grid grid-cols-[auto_1fr_auto] items-center gap-4 py-4">
+              <span class="font-bold" data-i18n="servicesPage.droneFlying">Drone Flying</span>
+              <span class="border-t border-gray-500 w-full"></span>
+              <span class="font-normal" data-i18n="servicesPage.droneFlyingPrice">from &euro;150</span>
+            </div>
+            <div class="grid grid-cols-[auto_1fr_auto] items-center gap-4 py-4">
+              <span class="font-bold" data-i18n="servicesPage.podcastRecording">Podcast Recording</span>
+              <span class="border-t border-gray-500 w-full"></span>
+              <span class="font-normal" data-i18n="servicesPage.podcastRecordingPrice">from &euro;250</span>
+            </div>
+          </div>
+          <a href="/contact-us/" class="block w-full lg:w-auto">
+            <button class="btn-color !w-full lg:!w-auto" data-i18n="servicesPage.button">Contact Us</button>
+          </a>
+        </div>
+        <img src="/images/services/zlatibor.svg" alt="zlatibor img" class="hidden lg:block rounded-lg w-full h-full object-cover" />
+      </div>
+
+      <!-- Photography Section -->
+      <div class="grid lg:grid-cols-2 gap-6 w-full items-center">
+        <img src="/images/services/our_services.svg" alt="our services img" class="hidden lg:block rounded-lg w-full h-full object-cover" />
+        <div class="flex flex-col justify-center items-start gap-6">
+          <h3 class="text-[#fff] text-xl lg:text-4xl font-semibold leading-[24px]" data-i18n="servicesPage.photoTitle">Photography</h3>
+          <img src="/images/services/our_services.svg" alt="our services img" class="rounded-lg lg:hidden" />
+          <p class="text-[#C7C7C9] text-base lg:text-xl leading-[24px] lg:leading-[32px] tracking-[0.032px]" data-i18n="servicesPage.photoDesc">
+            We capture high-quality images that showcase your brand's unique style.
+          </p>
+          <div class="w-full text-[#fff] text-base lg:text-xl">
+            <div class="grid grid-cols-[auto_1fr_auto] items-center gap-4 py-4">
+              <span class="font-bold" data-i18n="servicesPage.photoShoot">Photo Shoot</span>
+              <span class="border-t border-gray-500 w-full"></span>
+              <span class="font-normal" data-i18n="servicesPage.photoShootPrice">from &euro;200</span>
+            </div>
+            <div class="grid grid-cols-[auto_1fr_auto] items-center gap-4 py-4">
+              <span class="font-bold" data-i18n="servicesPage.eventPhoto">Event Photo</span>
+              <span class="border-t border-gray-500 w-full"></span>
+              <span class="font-normal" data-i18n="servicesPage.eventPhotoPrice">from &euro;300</span>
+            </div>
+            <div class="grid grid-cols-[auto_1fr_auto] items-center gap-4 py-4">
+              <span class="font-bold" data-i18n="servicesPage.spaceTour">360&deg; Space Tour</span>
+              <span class="border-t border-gray-500 w-full"></span>
+              <span class="font-normal" data-i18n="servicesPage.spaceTourPrice">from &euro;50 per image</span>
+            </div>
+            <div class="grid grid-cols-[auto_1fr_auto] items-center gap-4 py-4">
+              <span class="font-bold" data-i18n="servicesPage.eCommerce">E - Commerce (Product)</span>
+              <span class="border-t border-gray-500 w-full"></span>
+              <span class="font-normal" data-i18n="servicesPage.eCommercePrice">from &euro;7 per photo</span>
+            </div>
+            <div class="grid grid-cols-[auto_1fr_auto] items-center gap-4 py-4">
+              <span class="font-bold" data-i18n="servicesPage.employeeShoot">Employee Photo Shoot</span>
+              <span class="border-t border-gray-500 w-full"></span>
+              <span class="font-normal" data-i18n="servicesPage.employeeShootPrice">from &euro;20 per employee</span>
+            </div>
+          </div>
+          <a href="/contact-us/" class="block w-full lg:w-auto">
+            <button class="btn-color !w-full lg:!w-auto" data-i18n="servicesPage.button">Contact Us</button>
+          </a>
+        </div>
+      </div>
+
+      <!-- Social Media Management Section -->
+      <div class="grid lg:grid-cols-2 gap-6 w-full items-center">
+        <div class="flex flex-col justify-center items-start gap-6">
+          <h3 class="text-[#fff] text-xl lg:text-4xl font-semibold leading-[24px]" data-i18n="servicesPage.socialMediaTitle">Social Media Management</h3>
+          <img src="/images/services/services_3.svg" alt="services img" class="rounded-lg lg:hidden" />
+          <p class="text-[#C7C7C9] text-base lg:text-xl leading-[24px] lg:leading-[32px] tracking-[0.032px]" data-i18n="servicesPage.socialMediaDesc">
+            We are covering Facebook, Instagram, and TikTok.
+          </p>
+          <p class="text-[#C7C7C9] text-base lg:text-xl leading-[24px] lg:leading-[32px] tracking-[0.032px]">
+            Our monthly package includes:
+          </p>
+          <ul class="list-disc pl-5 text-[#fff] text-base lg:text-xl space-y-2">
+            <li data-i18n="servicesPage.socialMediaListPost">12 posts</li>
+            <li data-i18n="servicesPage.socialMediaListReel">1 reel</li>
+            <li data-i18n="servicesPage.socialMediaListStories">10 stories</li>
+            <li data-i18n="servicesPage.socialMediaListCopywriting">Copywriting</li>
+            <li data-i18n="servicesPage.socialMediaListVisualDesign">Visual Design</li>
+            <li data-i18n="servicesPage.socialMediaListCommunity">Community Management</li>
+            <li data-i18n="servicesPage.socialMediaListPromotional">Promotional Campaign (campaign budget not included)</li>
+          </ul>
+          <div class="w-full text-[#fff] text-base lg:text-xl">
+            <div class="grid grid-cols-[auto_1fr_auto] items-center gap-4 py-4">
+              <span class="font-bold max-w-[100px] lg:max-w-full" data-i18n="servicesPage.startingPrice">Starting price</span>
+              <span class="border-t border-gray-500 w-full"></span>
+              <span class="font-normal max-w-[100px] lg:max-w-full" data-i18n="servicesPage.price">from &euro;850 per month</span>
+            </div>
+          </div>
+          <a href="/contact-us/" class="block w-full lg:w-auto">
+            <button class="btn-color !w-full lg:!w-auto" data-i18n="servicesPage.button">Contact Us</button>
+          </a>
+        </div>
+        <img src="/images/services/services_3.svg" alt="services img" class="hidden lg:block rounded-lg w-full h-full object-cover" />
+      </div>
+    </div>
+    <div class="blue_gradient hidden lg:flex"></div>
+  </div>
+
+</BaseLayout>
