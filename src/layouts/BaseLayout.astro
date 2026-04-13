@@ -1,0 +1,184 @@
+---
+import Nav from '../components/Nav.astro';
+import MobileMenu from '../components/MobileMenu.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogUrl?: string;
+}
+
+const {
+  title = 'Neon Digital',
+  description = 'Explore our creative work and digital solutions.',
+  ogUrl = 'https://neondigital.rs/',
+} = Astro.props;
+
+const currentPath = Astro.url.pathname;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="https://neondigital.rs/images/about_us/about_us_img.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content={ogUrl} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/x-icon" href="/images/neon_logo.svg" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://res.cloudinary.com" />
+    <link rel="preconnect" href="https://gwodcdkzxwbepgxpxxvf.supabase.co" />
+    <link rel="stylesheet" href="/vendor/fancybox/fancybox.css" />
+    <script src="/vendor/fancybox/fancybox.umd.js" is:inline></script>
+  </head>
+  <body>
+    <Nav currentPath={currentPath} />
+    <MobileMenu />
+    <div id="menu-overlay" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 hidden z-40"></div>
+
+    <slot />
+
+    <Footer currentPath={currentPath} />
+
+    <script>
+      // Cursor trail (desktop only)
+      if (!('ontouchstart' in window)) {
+        document.addEventListener('mousemove', (e) => {
+          const trail = document.createElement('div');
+          trail.classList.add('cursor-trail');
+          document.body.appendChild(trail);
+          trail.style.left = `${e.clientX + window.scrollX - 2.5}px`;
+          trail.style.top = `${e.clientY + window.scrollY - 2.5}px`;
+          setTimeout(() => {
+            trail.style.transform = 'scale(2)';
+            trail.style.opacity = '0';
+          }, 10);
+          setTimeout(() => {
+            trail.remove();
+          }, 700);
+        });
+      }
+
+      // Mobile menu toggle
+      function toggleMobileMenu() {
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon') as HTMLImageElement | null;
+        const overlay = document.getElementById('menu-overlay');
+        const nav = document.querySelector('nav');
+        const footer = document.querySelector('footer');
+        if (!mobileMenu || !menuIcon || !overlay || !nav || !footer) return;
+
+        const isOpen = mobileMenu.classList.contains('active');
+        if (isOpen) {
+          closeMobileMenu();
+        } else {
+          mobileMenu.classList.remove('hidden');
+          setTimeout(() => mobileMenu.classList.add('active'), 10);
+          overlay.classList.remove('hidden');
+          menuIcon.src = '/images/close_icon.svg';
+          document.body.classList.add('no-scroll');
+          nav.classList.add('nav_position');
+          footer.classList.add('footer_position');
+        }
+      }
+
+      function closeMobileMenu() {
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon') as HTMLImageElement | null;
+        const overlay = document.getElementById('menu-overlay');
+        const nav = document.querySelector('nav');
+        const footer = document.querySelector('footer');
+        if (!mobileMenu || !menuIcon || !overlay || !nav || !footer) return;
+
+        mobileMenu.classList.remove('active');
+        overlay.classList.add('hidden');
+        menuIcon.src = '/images/mob_menu_icon.svg';
+        document.body.classList.remove('no-scroll');
+        nav.classList.remove('nav_position');
+        footer.classList.remove('footer_position');
+        setTimeout(() => mobileMenu.classList.add('hidden'), 500);
+      }
+
+      document.getElementById('menu-toggle')?.addEventListener('click', toggleMobileMenu);
+      document.getElementById('menu-overlay')?.addEventListener('click', closeMobileMenu);
+
+      document.querySelectorAll('#mobile-menu a').forEach((link) => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const target = (e.currentTarget as HTMLAnchorElement).href;
+          closeMobileMenu();
+          setTimeout(() => { window.location.href = target; }, 500);
+        });
+      });
+
+      // Language switcher
+      function applyTranslations(lang: string) {
+        fetch(`/locales/${lang}.json`)
+          .then((res) => res.json())
+          .then((translations: Record<string, any>) => {
+            document.querySelectorAll('[data-i18n]').forEach((el) => {
+              const key = el.getAttribute('data-i18n');
+              if (!key) return;
+              const value = key.split('.').reduce((obj: any, k: string) => obj?.[k], translations);
+              if (value === undefined) return;
+              if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) {
+                el.placeholder = value;
+              } else {
+                el.innerHTML = value;
+              }
+            });
+          });
+      }
+
+      function updateLangButtons(lang: string) {
+        const enBtn = document.getElementById('lang-en');
+        const srBtn = document.getElementById('lang-sr');
+        const enMob = document.getElementById('lang-en-mob');
+        const srMob = document.getElementById('lang-sr-mob');
+
+        if (lang === 'en') {
+          enBtn?.classList.add('opacity-0', 'pointer-events-none');
+          enBtn?.classList.remove('opacity-100', 'pointer-events-auto');
+          srBtn?.classList.remove('opacity-0', 'pointer-events-none');
+          srBtn?.classList.add('opacity-100', 'pointer-events-auto');
+          enMob?.classList.add('opacity-0', 'pointer-events-none');
+          enMob?.classList.remove('opacity-100', 'pointer-events-auto');
+          srMob?.classList.remove('opacity-0', 'pointer-events-none');
+          srMob?.classList.add('opacity-100', 'pointer-events-auto');
+        } else {
+          enBtn?.classList.remove('opacity-0', 'pointer-events-none');
+          enBtn?.classList.add('opacity-100', 'pointer-events-auto');
+          srBtn?.classList.add('opacity-0', 'pointer-events-none');
+          srBtn?.classList.remove('opacity-100', 'pointer-events-auto');
+          enMob?.classList.remove('opacity-0', 'pointer-events-none');
+          enMob?.classList.add('opacity-100', 'pointer-events-auto');
+          srMob?.classList.add('opacity-0', 'pointer-events-none');
+          srMob?.classList.remove('opacity-100', 'pointer-events-auto');
+        }
+      }
+
+      function switchLang(newLang: string) {
+        localStorage.setItem('lang', newLang);
+        applyTranslations(newLang);
+        updateLangButtons(newLang);
+      }
+
+      document.getElementById('lang-en')?.addEventListener('click', () => switchLang('en'));
+      document.getElementById('lang-sr')?.addEventListener('click', () => switchLang('sr'));
+      document.getElementById('lang-en-mob')?.addEventListener('click', () => switchLang('en'));
+      document.getElementById('lang-sr-mob')?.addEventListener('click', () => switchLang('sr'));
+
+      const initialLang = localStorage.getItem('lang') || 'en';
+      applyTranslations(initialLang);
+      updateLangButtons(initialLang);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+---
+const navLinks = [
+  { href: '/', label: 'Home', i18n: 'nav.home' },
+  { href: '/services/', label: 'Services', i18n: 'nav.services' },
+  { href: '/our-work/', label: 'Our Work', i18n: 'nav.ourWork' },
+  { href: '/about-us/', label: 'About Us', i18n: 'nav.about' },
+  { href: '/contact-us/', label: 'Contact Us', i18n: 'nav.contact' },
+];
+---
+
+<div id="mobile-menu" class="fixed top-0 left-0 w-full h-full bg-[#0B0B22] hidden flex flex-col items-center justify-center z-50">
+  <nav class="flex flex-col gap-6 text-white text-lg font-normal leading-normal">
+    {navLinks.map((link) => (
+      <a href={link.href} data-i18n={link.i18n}>{link.label}</a>
+    ))}
+  </nav>
+</div>

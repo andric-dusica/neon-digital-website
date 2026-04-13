@@ -1,0 +1,54 @@
+---
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+const navLinks = [
+  { href: '/', label: 'Home', i18n: 'nav.home' },
+  { href: '/services/', label: 'Services', i18n: 'nav.services' },
+  { href: '/our-work/', label: 'Our Work', i18n: 'nav.ourWork' },
+  { href: '/about-us/', label: 'About Us', i18n: 'nav.about' },
+  { href: '/contact-us/', label: 'Contact Us', i18n: 'nav.contact' },
+];
+
+function isActive(linkHref: string, currentPath: string): boolean {
+  if (linkHref === '/') {
+    return currentPath === '/' || currentPath === '/index.html';
+  }
+  return currentPath === linkHref || currentPath === linkHref.slice(0, -1);
+}
+---
+
+<nav class="flex w-full lg:justify-center">
+  <div class="flex p-4 justify-between items-start w-full lg:px-[84px] max-w-[1440px]">
+    <a href="/">
+      <img src="/images/neon_logo.png" alt="Logo" class="site-logo" />
+    </a>
+    <div class="lg:flex items-center gap-6 text-[#fff] text-lg font-normal leading-normal hidden">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          data-i18n={link.i18n}
+          class={isActive(link.href, currentPath) ? 'font-semibold' : ''}
+        >
+          {link.label}
+        </a>
+      ))}
+      <div class="relative w-[52px] h-[32px] ml-4">
+        <button id="lang-sr" class="lang-btn w-full absolute inset-0 opacity-0 pointer-events-none px-3 py-1 rounded-full border border-white text-white text-sm hover:bg-[#A510C3] transition">SR</button>
+        <button id="lang-en" class="lang-btn w-full absolute inset-0 opacity-100 pointer-events-auto px-3 py-1 rounded-full border border-white text-white text-sm hover:bg-[#A510C3] transition">EN</button>
+      </div>
+    </div>
+    <div class="flex items-center justify-end gap-3 lg:hidden">
+      <div class="relative w-[52px] h-[32px]">
+        <button id="lang-sr-mob" class="lang-btn w-full absolute inset-0 opacity-0 pointer-events-none px-3 py-1 rounded-full border border-white text-[#fff] text-sm hover:bg-[#A510C3] transition">SR</button>
+        <button id="lang-en-mob" class="lang-btn w-full absolute inset-0 opacity-0 pointer-events-none px-3 py-1 rounded-full border border-white text-[#fff] text-sm hover:bg-[#A510C3] transition">EN</button>
+      </div>
+      <button id="menu-toggle">
+        <img id="menu-icon" src="/images/mob_menu_icon.svg" alt="Menu" class="w-6 h-6" />
+      </button>
+    </div>
+  </div>
+</nav>

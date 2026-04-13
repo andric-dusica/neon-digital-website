@@ -1,0 +1,34 @@
+---
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+const navLinks = [
+  { href: '/', label: 'Home', i18n: 'nav.home' },
+  { href: '/services/', label: 'Services', i18n: 'nav.services' },
+  { href: '/our-work/', label: 'Our Work', i18n: 'nav.ourWork' },
+  { href: '/about-us/', label: 'About Us', i18n: 'nav.about' },
+  { href: '/contact-us/', label: 'Contact Us', i18n: 'nav.contact' },
+];
+---
+
+<footer class="flex h-[68px] py-3 px-4 lg:px-[72px] justify-center lg:justify-between items-center gap-6 max-w-[1440px] w-full">
+  <div class="hidden lg:flex w-[104px] pr-[9px] pl-[10px] justify-center items-center">
+    <a href="/"><img src="/images/neon_logo.png" alt="Logo" class="w-[85px] h-[52px]" /></a>
+  </div>
+  <div class="lg:flex items-center gap-6 text-[#fff] text-lg font-normal leading-normal hidden">
+    {navLinks.map((link) => {
+      const active = link.href === '/'
+        ? (currentPath === '/' || currentPath === '/index.html')
+        : (currentPath === link.href || currentPath === link.href.slice(0, -1));
+      return (
+        <a href={link.href} data-i18n={link.i18n} class={active ? 'font-semibold' : ''}>{link.label}</a>
+      );
+    })}
+  </div>
+  <p class="text-[#fff] text-lg leading-normal" data-i18n="footer.rights">
+    &copy; Neon Digital 2024
+  </p>
+</footer>
