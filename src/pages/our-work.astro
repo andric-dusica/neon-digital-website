@@ -14,7 +14,7 @@ const { data: ourWorkData } = await supabase
 
 const ourWorkUrls = new Set((ourWorkData || []).map(item => item.media_url));
 const filteredHomeData = (homeData || []).filter(item => !ourWorkUrls.has(item.media_url));
-const allMedia = [...filteredHomeData, ...(ourWorkData || [])];
+const allMedia = [...filteredHomeData, ...(ourWorkData || [])].filter(item => item && item.media_url);
 allMedia.sort((a, b) => (a.order || 0) - (b.order || 0));
 ---
 
@@ -123,17 +123,23 @@ allMedia.sort((a, b) => (a.order || 0) - (b.order || 0));
 
       if (cat === 'all' || cat === '360') {
         custom360.forEach(function(p) {
+          var wrap = document.createElement('div');
+          var wc = 'position:relative;overflow:hidden;border-radius:12px;border:1px solid #9949f5;';
+          if (!isMobile) { wc += 'height:352px;grid-column:span 2;'; }
+          wrap.style.cssText = wc;
           var a = document.createElement('a');
-          a.href = p.link; a.target = '_blank';
-          a.style.cssText = 'display:block;position:relative;overflow:hidden;border-radius:12px;';
+          a.href = p.link; a.target = '_blank'; a.rel = 'noopener noreferrer';
+          a.style.cssText = 'display:block;width:100%;height:100%;';
           var img = document.createElement('img');
           img.src = p.img; img.alt = lang === 'sr' ? p.name_sr : p.name;
-          img.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+          img.style.cssText = 'width:100%;height:100%;object-fit:contain;';
           var label = document.createElement('div');
           label.style.cssText = 'position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(transparent,rgba(0,0,0,0.7));color:white;font-size:14px;';
           label.textContent = lang === 'sr' ? p.name_sr : p.name;
-          a.appendChild(img); a.appendChild(label);
-          gallery.appendChild(a);
+          a.appendChild(img);
+          wrap.appendChild(a);
+          wrap.appendChild(label);
+          gallery.appendChild(wrap);
         });
       }
 
@@ -174,9 +180,19 @@ allMedia.sort((a, b) => (a.order || 0) - (b.order || 0));
 
     function createItem(item, idx, isMobile, lang) {
       var wrapper = document.createElement('div');
-      wrapper.style.cssText = 'position:relative;overflow:hidden;border-radius:12px;cursor:pointer;';
+      var isHorizontal = !isMobile && (
+        (item.type === 'image' && item.direction === 'horizontal') ||
+        item.category === 'video'
+      );
+      var css = 'position:relative;overflow:hidden;border-radius:12px;cursor:pointer;';
+      if (!isMobile) {
+        css += 'height:352px;';
+        if (isHorizontal) css += 'grid-column:span 2;';
+      }
+      wrapper.style.cssText = css;
       var a = document.createElement('a');
       a.href = item.media_url;
+      a.style.cssText = 'display:block;width:100%;height:100%;';
 
       if (isMobile) {
         a.addEventListener('click', function(e) { e.preventDefault(); openMobile(currentFiltered, idx); });
