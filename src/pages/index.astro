@@ -1,0 +1,313 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactCTA from '../components/ContactCTA.astro';
+import { supabase } from '../lib/supabase';
+
+const { data: logos } = await supabase.from('client_logo').select('client_logo_url');
+const { data: homeMedia } = await supabase
+  .from('home_our_work_images_videos')
+  .select('media_url, type, cover_url')
+  .order('order', { ascending: true });
+
+const { data: niksaAbout } = await supabase.from('home_page').select('*').eq('id', 1).single();
+const { data: niksaImg } = await supabase.from('home_page').select('*').eq('id', 2).single();
+const { data: andjaImg } = await supabase.from('home_page').select('*').eq('id', 3).single();
+---
+
+<BaseLayout title="Neon Digital" ogUrl="https://neondigital.rs/">
+
+  <!-- Hero Section -->
+  <div class="flex w-full lg:justify-center relative">
+    <div class="h-[554px] flex py-[64px] px-4 lg:px-0 items-center gap-[10px] relative lg:h-[869px] lg:pt-[200px] lg:pb-[204px] lg:flex-col lg:gap-10 max-w-[1440px] w-full">
+      <div class="flex flex-col items-center gap-14 lg:gap-10">
+        <h1 class="text-[#fff] text-center text-[32px] font-normal lg:text-[56px] lg:w-[740px]" data-i18n="hero.title">
+          Illuminating the digital world, one pixel at a time.
+        </h1>
+        <div class="flex flex-col items-center gap-6 w-full lg:justify-center lg:items-start lg:flex-row">
+          <a href="/contact-us/"><button class="btn-color w-full lg:w-auto" data-i18n="hero.contact">Contact Us</button></a>
+          <a href="/services/" class="z-[49]"><button class="btn-white w-full lg:w-auto" data-i18n="hero.services">View Services</button></a>
+        </div>
+      </div>
+    </div>
+    <div><img src="/images/home_page/andja_hero.png" alt="Andjela Andric" class="andja_hero" /></div>
+    <div><img src="/images/home_page/niksa_hero.png" alt="Niksa Malic Katanic" class="niksa_hero" /></div>
+    <img src="/images/bg_lines.svg" alt="" class="absolute z-[-2] w-full" />
+    <div class="cicrcle_gradient lg:hidden"></div>
+    <div class="cicrcle_gradient_1 hidden lg:block"></div>
+    <div class="cicrcle_gradient_2 hidden lg:block"></div>
+  </div>
+
+  <!-- Services Preview -->
+  <div class="flex py-14 lg:py-24 lg:px-[84px] px-4 flex-col items-center gap-10 text-[#fff] max-w-[1440px] relative services">
+    <h3 class="text-center text-2xl font-semibold leading-[28px] lg:text-5xl" data-i18n="services.title">Services</h3>
+    {niksaAbout && (
+      <img src={niksaAbout.image_url} alt={niksaAbout.description || 'Team'} class="w-[343px] h-[344px] lg:w-[627px] lg:h-[567px] rounded-2xl object-cover lg:hidden" />
+    )}
+    <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-8 lg:gap-10 w-full">
+      <div class="flex flex-col items-start gap-8 lg:w-[516px]">
+        <div class="flex flex-col items-center lg:items-start gap-3">
+          <h4 class="text-center lg:text-left text-xl lg:text-2xl font-semibold leading-6" data-i18n="services.videoTitle">Video</h4>
+          <p class="text-[#C7C7C9] text-center lg:text-left text-base lg:text-xl font-light leading-6 tracking-[0.032px]" data-i18n="services.videoDesc">Our video services deliver captivating visuals that highlight your brand.</p>
+        </div>
+        <div class="border border-b border-[#1B1B3D] w-full"></div>
+        <div class="flex flex-col items-center lg:items-start gap-3">
+          <h4 class="text-center lg:text-left text-xl lg:text-2xl font-semibold leading-6" data-i18n="services.photoTitle">Photography</h4>
+          <p class="text-[#C7C7C9] text-center lg:text-left text-base lg:text-xl font-light leading-6 tracking-[0.032px]" data-i18n="services.photoDesc">We capture high-quality images that showcase your brand's unique style.</p>
+        </div>
+        <div class="border border-b border-[#1B1B3D] w-full"></div>
+        <div class="flex flex-col items-center lg:items-start gap-3">
+          <h4 class="text-center lg:text-left text-xl lg:text-2xl font-semibold leading-6" data-i18n="services.socialTitle">Social Media Management</h4>
+          <p class="text-[#C7C7C9] text-center lg:text-left text-base lg:text-xl font-light leading-6 tracking-[0.032px]" data-i18n="services.socialDesc">From copywriting to ad management, we handle every aspect.</p>
+        </div>
+      </div>
+      {niksaAbout && (
+        <img src={niksaAbout.image_url} alt={niksaAbout.description || 'Team'} class="hidden lg:flex w-[343px] h-[344px] lg:w-[627px] lg:h-[567px] rounded-2xl object-cover lg:relative lg:top-[30px] lg:left-[50px]" />
+      )}
+    </div>
+    <a href="/services/"><button class="btn-white w-full lg:w-auto lg:self-start" data-i18n="services.button">View All Services</button></a>
+    <div class="blue_gradient"></div>
+  </div>
+
+  <!-- Client Logos -->
+  <div class="bg-[#16163D] flex py-[56px] px-4 flex-col items-center gap-10 w-full">
+    <div class="flex flex-col items-center gap-4 w-[343px] lg:w-full">
+      <h3 class="text-[#fff] text-center text-2xl lg:text-5xl font-semibold leading-7" data-i18n="clients.title">Happy faces</h3>
+      <p class="text-[#C7C7C9] text-center text-xl lg:text-2xl font-light leading-6 lg:leading-8 tracking-[0.032px]" data-i18n="clients.desc">Proudly presenting the clients who trust us.</p>
+    </div>
+    <div class="clients_logos">
+      {logos && logos.length > 0 && (
+        <div class="logos_wrapper" id="logos-wrapper">
+          {[...logos, ...logos, ...logos].map((logo) => (
+            <img src={logo.client_logo_url} alt="Client Logo" class="client-logo" />
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+
+  <!-- Our Work Preview -->
+  <div class="flex py-[56px] lg:py-24 lg:px-[84px] px-4 max-w-[1440px] flex-col items-center gap-10 lg:gap-[56px] our_work relative">
+    <div class="flex flex-col items-center gap-4 w-[343px] lg:w-auto">
+      <h3 class="text-[#fff] text-center text-2xl lg:text-5xl font-semibold leading-7" data-i18n="ourWork.title">Our Work</h3>
+      <p class="text-[#C7C7C9] text-center text-xl lg:text-2xl font-light leading-6 lg:leading-8" data-i18n="ourWork.desc">Experience the power of our visual storytelling.</p>
+    </div>
+    <div class="portfolio-carousel-wrapper w-full relative">
+      <div class="swiper home-portfolio-swiper">
+        <div class="swiper-wrapper">
+          {homeMedia && homeMedia.map((item) => (
+            <div class="swiper-slide">
+              <div class="item">
+                <a href={item.media_url} data-fancybox="gallery" data-media-type={item.type} data-cover-url={item.cover_url || ''}>
+                  {item.type === 'image' ? (
+                    <img src={item.media_url} alt="Portfolio" loading="lazy" style="width:100%;height:auto;object-fit:cover;border-radius:12px;" />
+                  ) : (
+                    <div style="position:relative;display:inline-block;width:100%;height:100%;">
+                      <img src={item.cover_url} alt="Video Thumbnail" style="width:100%;height:auto;object-fit:cover;border-radius:12px;" />
+                      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50px;height:50px;background:rgba(0,0,0,0.6);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"></path></svg>
+                      </div>
+                    </div>
+                  )}
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+      <div class="swiper-button-prev custom-arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 25 25" fill="none"><path d="M15.5 18.5L9.5 12.5L15.5 6.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="swiper-button-next custom-arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 25 25" fill="none"><path d="M9.5 18.5L15.5 12.5L9.5 6.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <a href="/our-work/"><button class="btn-white w-full lg:w-auto relative z-10" data-i18n="ourWork.button">View All Projects</button></a>
+    <div class="pink_gradient"></div>
+  </div>
+
+  <!-- About Us Preview -->
+  <div class="flex py-[56px] lg:py-24 lg:px-[84px] px-4 flex-col items-center gap-6 lg:gap-10 w-full relative about_us max-w-[1440px]">
+    <h3 class="text-[#fff] text-center text-2xl lg:text-5xl font-semibold leading-7" data-i18n="about.title">About Us</h3>
+    <div class="flex flex-col items-center gap-10 w-[343px] lg:w-full lg:items-start lg:gap-8">
+      <div class="flex flex-col lg:flex-row items-start lg:items-center gap-6">
+        {niksaImg && (<img src={niksaImg.image_url} alt={niksaImg.description || 'Niksa'} id="niksa_img" class="w-[343px] h-[344px] lg:w-[300px] lg:h-[300px] rounded-2xl object-cover" />)}
+        <div class="flex flex-col items-start gap-4 text-[#fff] lg:w-[627px]">
+          <h4 class="text-center lg:text-left text-xl font-medium leading-6 lg:leading-10 lg:text-[32px]" data-i18n="about.meetMaestro">Meet the maestro of our digital canvas</h4>
+          <p class="text-center lg:text-left text-base font-normal leading-6 tracking-[0.032px] lg:text-xl lg:leading-[32px]" data-i18n="about.niksaDesc">Niksa Malic-Katanic, the Director of Photography.</p>
+        </div>
+      </div>
+      <div class="flex flex-col lg:flex-row-reverse items-start lg:items-center gap-6 lg:w-full">
+        {andjaImg && (<img src={andjaImg.image_url} alt={andjaImg.description || 'Andja'} class="w-[343px] h-[344px] lg:w-[300px] lg:h-[300px] rounded-2xl object-cover" />)}
+        <div class="flex flex-col items-start gap-4 text-[#fff] lg:w-[627px]">
+          <h4 class="text-center lg:text-left text-xl font-medium leading-6 lg:leading-[40px] lg:text-3xl" data-i18n="about.sayHello">Say hello to the creative force of our digital team</h4>
+          <p class="text-center lg:text-left text-base font-normal leading-6 tracking-[0.032px] lg:text-xl lg:leading-[32px]" data-i18n="about.andjaDesc">Andjela Andric, who brings a vibrant and feminine touch.</p>
+        </div>
+      </div>
+      <a href="/about-us/" class="w-full lg:w-auto lg:mx-auto"><button class="btn-white w-full lg:w-auto lg:mx-auto" data-i18n="about.button">Learn More</button></a>
+    </div>
+    <div class="blue_gradient"></div>
+  </div>
+
+  <ContactCTA />
+
+</BaseLayout>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" is:inline />
+<script is:inline src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    var wrapper = document.getElementById('logos-wrapper');
+    if (wrapper) {
+      var scrollPos = 0;
+      (function animate() {
+        scrollPos -= 1;
+        if (Math.abs(scrollPos) >= wrapper.scrollWidth / 3) scrollPos = 0;
+        wrapper.style.transform = 'translateX(' + scrollPos + 'px)';
+        requestAnimationFrame(animate);
+      })();
+    }
+
+    if (typeof Swiper !== 'undefined') {
+      new Swiper('.home-portfolio-swiper', {
+        slidesPerView: 1, spaceBetween: 10,
+        loop: false,
+        rewind: true,
+        watchOverflow: true,
+        navigation: {
+          nextEl: '.portfolio-carousel-wrapper .swiper-button-next',
+          prevEl: '.portfolio-carousel-wrapper .swiper-button-prev'
+        },
+        pagination: { el: '.swiper-pagination', clickable: true },
+        breakpoints: {
+          768: { slidesPerView: 2, spaceBetween: 20 },
+          1024: { slidesPerView: 3, spaceBetween: 24 },
+          1280: { slidesPerView: 4, spaceBetween: 24 },
+        },
+      });
+    }
+
+    var isMobile = window.innerWidth <= 768;
+    var galleryLinks = document.querySelectorAll('[data-fancybox="gallery"]');
+
+    if (isMobile) {
+      // Collect media data first
+      var mediaItems = [];
+      galleryLinks.forEach(function(link) {
+        mediaItems.push({
+          media_url: link.getAttribute('href') || '',
+          type: link.getAttribute('data-media-type') || 'image',
+          cover_url: link.getAttribute('data-cover-url') || '',
+        });
+      });
+      // Strip Fancybox attributes and attach custom click
+      galleryLinks.forEach(function(link, idx) {
+        link.removeAttribute('data-fancybox');
+        link.removeAttribute('data-type');
+        link.removeAttribute('data-html');
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          openMobileModal(mediaItems, idx);
+        });
+      });
+    } else {
+      galleryLinks.forEach(function(link) {
+        var mt = link.getAttribute('data-media-type');
+        var cu = link.getAttribute('data-cover-url');
+        if (mt === 'video') {
+          link.setAttribute('data-type', 'html');
+          link.setAttribute('data-html',
+            '<div style="position:relative;display:inline-block;width:100%;max-width:700px;max-height:620px;">' +
+            '<video class="fancybox-video" controls playsinline preload="metadata" style="border-radius:28px;width:100%;height:auto;max-width:700px;max-height:620px;" poster="' + cu + '" data-src="' + link.getAttribute('href') + '">Your browser does not support video.</video></div>');
+        }
+      });
+      if (typeof Fancybox !== 'undefined') {
+        Fancybox.bind('[data-fancybox="gallery"]', {
+          Hash: false, loop: false, preload: 0,
+          Thumbs: { type: 'classic' },
+          Carousel: {
+            transition: 'fadeFast',
+            friction: 0.5,
+          },
+          on: {
+            'Carousel.selectSlide': function() {
+              document.querySelectorAll('.fancybox-video').forEach(function(v) {
+                v.pause(); v.currentTime = 0; v.removeAttribute('src'); v.removeAttribute('autoplay'); v.load();
+              });
+              var active = document.querySelector('.fancybox__slide.is-selected .fancybox-video');
+              if (!active) return;
+              var src = active.getAttribute('data-src');
+              if (src) {
+                active.setAttribute('src', src); active.setAttribute('autoplay', 'true'); active.load();
+                active.muted = true;
+                active.play().then(function() {
+                  active.removeAttribute('poster');
+                  setTimeout(function() { active.muted = false; active.volume = 1.0; }, 300);
+                }).catch(function() {});
+              }
+            },
+            'close': function() {
+              document.querySelectorAll('.fancybox-video').forEach(function(v) {
+                v.pause(); v.currentTime = 0; v.removeAttribute('src'); v.load();
+              });
+            },
+          },
+        });
+      }
+    }
+  });
+
+  function openMobileModal(media, startIndex) {
+    var currentIndex = startIndex;
+    var prevY = window.scrollY || 0;
+    document.body.style.position = 'fixed'; document.body.style.top = '-' + prevY + 'px';
+    document.body.style.left = '0'; document.body.style.right = '0'; document.body.style.width = '100%';
+
+    var modal = document.createElement('div');
+    modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:9999;display:flex;align-items:center;justify-content:center;overflow:hidden;';
+    var content = document.createElement('div');
+    content.style.cssText = 'display:flex;align-items:center;justify-content:center;width:100%;height:100%;';
+    var closeBtn = document.createElement('button');
+    closeBtn.innerHTML = '&times;';
+    closeBtn.style.cssText = 'position:absolute;top:-5px;right:20px;background:none;border:none;color:white;font-size:30px;cursor:pointer;';
+
+    function closeModal() {
+      document.body.style.position = ''; document.body.style.top = '';
+      document.body.style.left = ''; document.body.style.right = ''; document.body.style.width = '';
+      window.scrollTo(0, prevY); modal.remove();
+    }
+    function updateContent() {
+      content.querySelectorAll('video').forEach(function(v) { v.pause(); v.removeAttribute('src'); v.load(); });
+      content.innerHTML = '';
+      var item = media[currentIndex];
+      if (item.type === 'image') {
+        var img = document.createElement('img');
+        img.src = item.media_url; img.style.cssText = 'max-width:90%;max-height:90%;border-radius:28px';
+        content.appendChild(img);
+      } else {
+        var video = document.createElement('video');
+        video.controls = true; video.playsInline = true; video.src = item.media_url; video.autoplay = true;
+        video.style.cssText = 'max-width:90%;max-height:90%;border-radius:28px;';
+        content.appendChild(video); video.play().catch(function() {});
+      }
+    }
+
+    var startX = 0, startY = 0;
+    content.addEventListener('touchstart', function(e) { if (e.touches.length > 0) { startX = e.touches[0].clientX; startY = e.touches[0].clientY; } });
+    content.addEventListener('touchmove', function(e) {
+      if (e.touches.length > 0) {
+        var dx = e.touches[0].clientX - startX; var dy = e.touches[0].clientY - startY;
+        if (dx < -50) { currentIndex = (currentIndex + 1) % media.length; updateContent(); startX = e.touches[0].clientX; }
+        else if (dx > 50) { currentIndex = (currentIndex - 1 + media.length) % media.length; updateContent(); startX = e.touches[0].clientX; }
+        else if (dy > 50 && Math.abs(dy) > Math.abs(dx)) closeModal();
+      }
+    });
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+    updateContent();
+    modal.appendChild(content); modal.appendChild(closeBtn);
+    document.body.appendChild(modal);
+  }
+</script>
