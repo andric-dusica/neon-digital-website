@@ -1,0 +1,25 @@
+name: Supabase Keep-Alive
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase tables
+        env:
+          SUPABASE_URL: https://gwodcdkzxwbepgxpxxvf.supabase.co
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          set -e
+          for table in our_work_images_videos home_our_work_images_videos client_logo home_page; do
+            echo "Pinging $table..."
+            curl -sf "$SUPABASE_URL/rest/v1/$table?select=id&limit=1" \
+              -H "apikey: $SUPABASE_ANON_KEY" \
+              -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+              -o /dev/null -w "  HTTP %{http_code} | %{time_total}s\n"
+          done
+          echo "Keep-alive done."
