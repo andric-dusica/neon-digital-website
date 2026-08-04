@@ -2,16 +2,12 @@ name: Validate dependency updates
 
 on:
   pull_request:
-    paths:
-      - package.json
-      - package-lock.json
 
 permissions:
   contents: read
 
 jobs:
   build:
-    if: github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
