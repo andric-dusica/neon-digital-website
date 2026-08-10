@@ -10,13 +10,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/vercel": "^11.0.4",
+    "@astrojs/vercel": "^11.0.5",
     "@fancyapps/ui": "^5.0.36",
-    "@supabase/supabase-js": "^2.80.0",
-    "@tailwindcss/vite": "4.1.17",
-    "astro": "^7.1.6",
+    "@supabase/supabase-js": "^2.112.2",
+    "@tailwindcss/vite": "4.3.3",
+    "astro": "^7.2.0",
     "resend": "^4.8.0",
     "swiper": "^12.1.2",
-    "tailwindcss": "4.1.17"
+    "tailwindcss": "4.3.3"
   }
 }
