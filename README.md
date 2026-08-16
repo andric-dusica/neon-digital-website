@@ -42,6 +42,14 @@ RESEND_API_KEY=...
 
 **Važno:** `.env` ne ide na GitHub. Na Vercel-u se postavlja u Project Settings → Environment Variables.
 
+## Supabase dostupnost (Free plan)
+
+Neon Digital koristi Supabase projekat `gwodcdkzxwbepgxpxxvf` za dinamički sadržaj sajta. Pošto je projekat na Free planu, Supabase ga može pauzirati kada tokom sedam dana ne vidi dovoljno database aktivnosti.
+
+Od **16. avgusta 2026.** aktivan je dnevni, read-only health-check kroz GitHub Actions: [`.github/workflows/supabase-keepalive.yml`](.github/workflows/supabase-keepalive.yml). Svaki dan u **06:20 UTC** (08:20 po vremenu u Srbiji tokom letnjeg računanja vremena) workflow čita po jedan red iz postojećih tabela `our_work_images_videos`, `home_our_work_images_videos`, `client_logo` i `home_page`. Ne menja bazu, Storage, sadržaj sajta niti korisničke podatke.
+
+Za workflow je u GitHub repository secrets potreban samo `SUPABASE_ANON_KEY`; vrednost se nikada ne upisuje u kod ili dokumentaciju. Run može ručno da se pokrene iz GitHub Actions stranice preko **Run workflow**. Ako run ne uspe, proveriti da li je secret i dalje postavljen i da li tabele/API dozvole postoje. Ako je Supabase projekat već pauziran, u Supabase Dashboardu treba kliknuti **Resume project**; workflow ga ne može sam reaktivirati.
+
 ## Struktura projekta
 
 ```
