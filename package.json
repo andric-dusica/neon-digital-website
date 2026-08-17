@@ -12,9 +12,9 @@
   "dependencies": {
     "@astrojs/vercel": "^11.0.5",
     "@fancyapps/ui": "^5.0.36",
-    "@supabase/supabase-js": "^2.112.2",
+    "@supabase/supabase-js": "^2.112.3",
     "@tailwindcss/vite": "4.3.3",
-    "astro": "^7.2.0",
+    "astro": "^7.2.2",
     "resend": "^4.8.0",
     "swiper": "^12.1.2",
     "tailwindcss": "4.3.3"
