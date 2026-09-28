@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@astrojs/vercel": "^11.0.11",
-    "@fancyapps/ui": "^5.0.36",
+    "@fancyapps/ui": "^6.1.15",
     "@supabase/supabase-js": "^2.117.1",
     "@tailwindcss/vite": "4.3.3",
     "astro": "^7.3.5",
