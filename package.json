@@ -16,7 +16,7 @@
     "@tailwindcss/vite": "4.3.5",
     "astro": "^7.4.11",
     "resend": "^4.8.0",
-    "swiper": "^12.1.2",
+    "swiper": "^14.4.0",
     "tailwindcss": "4.3.5"
   }
 }
